@@ -1,0 +1,144 @@
+[{
+    "tag":"Java",
+    "NoOfQuestion":1741335,
+    "Questions": [
+        {
+            "question":"Why is processing a sorted array faster than processing an unsorted array?",
+            "votes":25137,
+            "NoOfAnswer":26,
+            "views":"1.6M"
+        },
+        {
+            "question":"Why is subtracting these two times (in 1927) giving a strange result?",
+            "votes":7051,
+            "NoOfAnswer":11,
+            "views":"714k"
+        },
+        {
+            "question":"Is Java “pass-by-reference” or “pass-by-value”?",
+            "votes":6842,
+            "NoOfAnswer":83,
+            "views":"2.1M"
+        }
+    ]
+},
+{
+    "tag":"python",
+    "NoOfQuestion":1612220,
+    "Questions": [
+        {
+            "question":"What does the “yield” keyword do?",
+            "votes":10772,
+            "NoOfAnswer":42,
+            "views":"2.4M"
+        },
+        {
+            "question":"What does if __name__ == “__main__”: do?",
+            "votes":6507,
+            "NoOfAnswer":34,
+            "views":"3.3M"
+        },
+        {
+            "question":"Does Python have a ternary conditional operator?",
+            "votes":6398,
+            "NoOfAnswer":28,
+            "views":"2.0M"
+        }
+    ]
+},
+{
+    "tag":"Javascript",
+    "NoOfQuestion":2140949 ,
+    "Questions": [
+        {
+            "question":"How can I remove a specific item from an array?",
+            "votes":8924,
+            "NoOfAnswer":101,
+            "views":"7.5M"
+        },
+        {
+            "question":"How do I check if an element is hidden in jQuery?",
+            "votes":7972,
+            "NoOfAnswer":59,
+            "views":"2.8M"
+        },
+        {
+            "question":"What does “use strict” do in JavaScript, and what is the reasoning behind it?",
+            "votes":7727,
+            "NoOfAnswer":28,
+            "views":"1.1M"
+        }
+    ]
+},
+{
+    "tag":"HTML",
+    "NoOfQuestion":1045064,
+    "Questions": [
+        {
+            "question":"Why does HTML think “chucknorris” is a color?",
+            "votes":7876,
+            "NoOfAnswer":9,
+            "views":"619K"
+        },
+        {
+            "question":"How do I check whether a checkbox is checked in jQuery?",
+            "votes":4724,
+            "NoOfAnswer":66,
+            "views":"4.3M"
+        },
+        {
+            "question":"How to horizontally center a <div>",
+            "votes":4505,
+            "NoOfAnswer":113,
+            "views":"4.2M"
+        }
+    ]
+},
+{
+    "tag":"Jquery",
+    "NoOfQuestion":1007257,
+    "Questions": [
+        {
+            "question":"How do I check if an element is hidden in jQuery?",
+            "votes":7972,
+            "NoOfAnswer":59,
+            "views":"2.8M"
+        },
+        {
+            "question":"How do I redirect to another webpage?",
+            "votes":7717,
+            "NoOfAnswer":58,
+            "views":"6.5M"
+        },
+        {
+            "question":"How do I return the response from an asynchronous call?",
+            "votes":5778,
+            "NoOfAnswer":42,
+            "views":"1.6M"
+        }
+    ]
+},
+{
+    "tag":"c#",
+    "NoOfQuestion":1454436,
+    "Questions": [
+        {
+            "question":"What is the difference between String and string in C#?",
+            "votes":6769,
+            "NoOfAnswer":62,
+            "views":"1.1M"
+        },
+        {
+            "question":"How to enumerate an enum",
+            "votes":3906,
+            "NoOfAnswer":30,
+            "views":"816k"
+        },
+        {
+            "question":"How can I cast int to enum?",
+            "votes":3341,
+            "NoOfAnswer":31,
+            "views":"1.5M"
+        }
+    ]
+}]

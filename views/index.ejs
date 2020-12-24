@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Machine Task</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
+    integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="row">
+    <!-- Chart 1-->
+    <div class="column card">
+      <h3 style="text-align: center;">No. of Questions in Each Tags</h3>
+      <canvas id="firstCanvas" width="400" height="400"></canvas>
+    </div>
+    <!-- Chart 2-->
+    <div class="column card">
+      <h3 style="text-align: center;">Total Number of Votes in Each Tags</h3>
+      <canvas id="secondCanvas" width="400" height="400"></canvas>
+    </div>
+    <!-- Chart 3-->
+    <div class="column card">
+      <h3 style="text-align: center;">Total Number of Answers in Each Tags</h3>
+      <canvas id="thirdCanvas" width="400" height="400"></canvas>
+    </div>
+  </div>
+  <br>
+  <!-- Table -->
+  <h3>Table Representation</h3>
+  <table id="TagTable">
+    <tr>
+      <th>Tag</th>
+      <th>No Of Questions</th>
+      <th>Questions</th>
+      <th>Votes</th>
+      <th> No Of Answers</th>
+      <th>Views</th>
+    </tr>
+
+    <% for (let i = 0; i < JSON.parse(JSON.stringify(data)).length;i++) { %>
+    <tr>
+      <td>
+        <%- JSON.parse(JSON.stringify(data))[i].tag %>
+      </td>
+
+      <td>
+        <%- JSON.parse(JSON.stringify(data))[i].NoOfQuestion %>
+      </td>
+
+      <td>
+        <% for (let j = 0; j < JSON.parse(JSON.stringify(data))[i].Questions.length;j++) { %>
+        <div>
+          <%- JSON.parse(JSON.stringify(data))[i].Questions[j].question %>
+        </div>
+        <% } %>
+      </td>
+
+      <td>
+        <% for (let j = 0; j < JSON.parse(JSON.stringify(data))[i].Questions.length;j++) { %>
+        <div>
+          <%- JSON.parse(JSON.stringify(data))[i].Questions[j].votes %>
+        </div>
+        <% } %>
+      </td>
+
+      <td>
+        <% for (let j = 0; j < JSON.parse(JSON.stringify(data))[i].Questions.length;j++) { %>
+        <div>
+          <%- JSON.parse(JSON.stringify(data))[i].Questions[j].NoOfAnswer %>
+        </div>
+        <% } %>
+      </td>
+
+      <td>
+        <% for (let j = 0; j < JSON.parse(JSON.stringify(data))[i].Questions.length;j++) { %>
+        <div>
+          <%- JSON.parse(JSON.stringify(data))[i].Questions[j].views %>
+        </div>
+        <% } %>
+      </td>
+    </tr>
+    <% } %>
+  </table>
+
+  <script type="text/javascript">
+    let mockJson = `<%- JSON.stringify(data) %>`
+    let label = [];
+    let data = [];
+    let secondLabel = [];
+    let secondData = [];
+    let thirdLabel = [];
+    let thirdData = [];
+    let votes = 0;
+    let NoOfAnswer = 0;
+
+    /* Convert Data From MockJson For Chart*/
+    for (let index = 0; index < JSON.parse(mockJson).length; index++) {
+      votes = 0;
+      NoOfAnswer = 0;
+      label.push(JSON.parse(mockJson)[index].tag)
+      secondLabel.push(JSON.parse(mockJson)[index].tag)
+      thirdLabel.push(JSON.parse(mockJson)[index].tag)
+      data.push(JSON.parse(mockJson)[index].NoOfQuestion)
+      for (let j = 0; j < JSON.parse(mockJson)[index].Questions.length; j++) {
+        votes = votes + JSON.parse(mockJson)[index].Questions[j].votes
+        NoOfAnswer = NoOfAnswer + JSON.parse(mockJson)[index].Questions[j].NoOfAnswer
+      }
+      secondData.push(votes)
+      thirdData.push(NoOfAnswer)
+    }
+
+    /* Refer HTML Element */
+    let firstCanvas = document.getElementById("firstCanvas");
+    let secondCanvas = document.getElementById("secondCanvas");
+    let thirdCanvas = document.getElementById("thirdCanvas");
+
+    /* Declare Chart Type */
+    let firstCtx = firstCanvas.getContext("2d");
+    let secondCtx = secondCanvas.getContext("2d");
+    let thirdCtx = thirdCanvas.getContext("2d");
+
+    /* Initialize Chart 1 */
+    let myChart = new Chart(firstCtx, {
+      type: 'polarArea',
+      data: data = {
+        datasets: [{
+          data: data,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+        }],
+        labels: label
+      },
+      options: {
+        responsive: true
+      }
+    });
+
+    /* Initialize Chart 2 */
+    let secondChart = new Chart(secondCtx, {
+      type: 'doughnut',
+      data: data = {
+        datasets: [{
+          data: secondData,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+        }],
+        labels: secondLabel
+      },
+      options: {
+        responsive: true
+      }
+    });
+
+    /* Initialize Chart 3 */
+    let thirdChart = new Chart(thirdCtx, {
+      type: 'pie',
+      data: data = {
+        datasets: [{
+          data: thirdData,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+        }],
+        labels: thirdLabel
+      },
+      options: {
+        responsive: true
+      }
+    });
+  </script>
+
+</body>
+
+</html>
