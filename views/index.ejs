@@ -7,6 +7,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
     integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
     crossorigin="anonymous"></script>
+
+  <script src="/socket.io/socket.io.js"></script>
 </head>
 
 <body>
@@ -17,20 +19,20 @@
       <canvas id="firstCanvas" width="400" height="400"></canvas>
     </div>
     <!-- Chart 2-->
-    <div class="column card">
+    <!-- <div class="column card">
       <h3 style="text-align: center;">Total Number of Votes in Each Tags</h3>
       <canvas id="secondCanvas" width="400" height="400"></canvas>
-    </div>
+    </div> -->
     <!-- Chart 3-->
-    <div class="column card">
+    <!-- <div class="column card">
       <h3 style="text-align: center;">Total Number of Answers in Each Tags</h3>
       <canvas id="thirdCanvas" width="400" height="400"></canvas>
-    </div>
+    </div> -->
   </div>
   <br>
   <!-- Table -->
-  <h3>Table Representation</h3>
-  <table id="TagTable">
+  <!-- <h3>Table Representation</h3> -->
+  <!-- <table id="TagTable">
     <tr>
       <th>Tag</th>
       <th>No Of Questions</th>
@@ -83,12 +85,24 @@
       </td>
     </tr>
     <% } %>
-  </table>
+  </table> -->
 
   <script type="text/javascript">
-    let mockJson = `<%- JSON.stringify(data) %>`
+    var socket = io.connect('http://127.0.0.1:3000');
+    let mockJson;
+    mockJson = `<%- JSON.stringify(data) %>`
+
     let label = [];
     let data = [];
+    let colorCode = ["rgba(253,195,170,0.54)", "rgba(22,193,77,0.96)", "rgba(171,254,27,0.94)", "rgba(43,180,90,0.31)",
+      "rgba(41,70,76,0.58)", "rgba(4,239,84,0.49)", "rgba(207,215,89,0.61)", "rgba(27,2,246,0.37)",
+      "rgba(11,245,192,0.26)", "rgba(65,108,94,0.07)", "rgba(45,168,75,0.74)", "rgba(73,237,113,0.83)",
+      "rgba(201,180,7,0.18)", "rgba(15,178,138,0.63)", "rgba(215,234,131,0.03)", "rgba(121,71,206,0.78)",
+      "rgba(10,0,166,0.3)", "rgba(242,125,113,0.2)", "rgba(57,35,205,0.87)", "rgba(45,22,189,0.31)",
+      "rgba(98,73,246,0.83)", "rgba(120,11,51,0.02)", "rgba(218,144,65,0.33)", "rgba(252,192,178,0.78)",
+      "rgba(79,89,54,0.96)", "rgba(132,20,14,0.71)", "rgba(212,24,136,0.88)", "rgba(140,235,53,0.32)",
+      "rgba(170,251,38,0.93)", "rgba(135,8,31,0.72)"
+    ];
     let secondLabel = [];
     let secondData = [];
     let thirdLabel = [];
@@ -96,121 +110,296 @@
     let votes = 0;
     let NoOfAnswer = 0;
 
-    /* Convert Data From MockJson For Chart*/
-    for (let index = 0; index < JSON.parse(mockJson).length; index++) {
-      votes = 0;
-      NoOfAnswer = 0;
-      label.push(JSON.parse(mockJson)[index].tag)
-      secondLabel.push(JSON.parse(mockJson)[index].tag)
-      thirdLabel.push(JSON.parse(mockJson)[index].tag)
-      data.push(JSON.parse(mockJson)[index].NoOfQuestion)
-      for (let j = 0; j < JSON.parse(mockJson)[index].Questions.length; j++) {
-        votes = votes + JSON.parse(mockJson)[index].Questions[j].votes
-        NoOfAnswer = NoOfAnswer + JSON.parse(mockJson)[index].Questions[j].NoOfAnswer
+    let tableFinalData = [{
+        "items": [{
+            "tags": [
+              "javascript",
+              "jquery",
+              "ajax",
+              "asynchronous"
+            ],
+            "owner": {
+              "reputation": 680555,
+              "user_id": 218196,
+              "user_type": "registered",
+              "accept_rate": 100,
+              "profile_image": "https://i.stack.imgur.com/4P5DY.jpg?s=128&g=1",
+              "display_name": "Felix Kling",
+              "link": "https://stackoverflow.com/users/218196/felix-kling"
+            },
+            "is_answered": true,
+            "view_count": 1589378,
+            "protected_date": 1554698603,
+            "accepted_answer_id": 14220323,
+            "answer_count": 42,
+            "score": 5778,
+            "last_activity_date": 1606999581,
+            "creation_date": 1357664774,
+            "last_edit_date": 1599782613,
+            "question_id": 14220321,
+            "content_license": "CC BY-SA 4.0",
+            "link": "https://stackoverflow.com/questions/14220321/how-do-i-return-the-response-from-an-asynchronous-call",
+            "title": "How do I return the response from an asynchronous call?"
+          },
+          {
+            "tags": [
+              "javascript",
+              "jquery",
+              "events",
+              "unobtrusive-javascript"
+            ],
+            "owner": {
+              "reputation": 86168,
+              "user_id": 27580,
+              "user_type": "registered",
+              "accept_rate": 78,
+              "profile_image": "https://www.gravatar.com/avatar/f198305bbd04f5fd7c49051dd6e77782?s=128&d=identicon&r=PG",
+              "display_name": "Eli",
+              "link": "https://stackoverflow.com/users/27580/eli"
+            },
+            "is_answered": true,
+            "view_count": 896023,
+            "protected_date": 1395655750,
+            "accepted_answer_id": 1207393,
+            "answer_count": 23,
+            "score": 1677,
+            "locked_date": 1529684683,
+            "last_activity_date": 1606060873,
+            "creation_date": 1224026719,
+            "last_edit_date": 1480674460,
+            "question_id": 203198,
+            "content_license": "CC BY-SA 3.0",
+            "link": "https://stackoverflow.com/questions/203198/event-binding-on-dynamically-created-elements",
+            "title": "Event binding on dynamically created elements?"
+          },
+          {
+            "tags": [
+              "javascript",
+              "loops",
+              "closures"
+            ],
+            "owner": {
+              "reputation": 488781,
+              "user_id": 9021,
+              "user_type": "registered",
+              "accept_rate": 70,
+              "profile_image": "https://www.gravatar.com/avatar/f092dfd45793e9483281d4205b674823?s=128&d=identicon&r=PG",
+              "display_name": "nickf",
+              "link": "https://stackoverflow.com/users/9021/nickf"
+            },
+            "is_answered": true,
+            "view_count": 398391,
+            "protected_date": 1399777873,
+            "accepted_answer_id": 750506,
+            "answer_count": 44,
+            "score": 2926,
+            "last_activity_date": 1601949653,
+            "creation_date": 1239775580,
+            "last_edit_date": 1596015668,
+            "question_id": 750486,
+            "content_license": "CC BY-SA 4.0",
+            "link": "https://stackoverflow.com/questions/750486/javascript-closure-inside-loops-simple-practical-example",
+            "title": "JavaScript closure inside loops – simple practical example"
+          },
+          {
+            "tags": [
+              "javascript",
+              "callback",
+              "this"
+            ],
+            "owner": {
+              "reputation": 680555,
+              "user_id": 218196,
+              "user_type": "registered",
+              "accept_rate": 100,
+              "profile_image": "https://i.stack.imgur.com/4P5DY.jpg?s=128&g=1",
+              "display_name": "Felix Kling",
+              "link": "https://stackoverflow.com/users/218196/felix-kling"
+            },
+            "is_answered": true,
+            "view_count": 451949,
+            "protected_date": 1444035594,
+            "accepted_answer_id": 20279485,
+            "answer_count": 12,
+            "score": 1534,
+            "last_activity_date": 1605983029,
+            "creation_date": 1385705591,
+            "last_edit_date": 1499797921,
+            "question_id": 20279484,
+            "content_license": "CC BY-SA 3.0",
+            "link": "https://stackoverflow.com/questions/20279484/how-to-access-the-correct-this-inside-a-callback",
+            "title": "How to access the correct `this` inside a callback?"
+          },
+          {
+            "tags": [
+              "javascript",
+              "asynchronous"
+            ],
+            "owner": {
+              "reputation": 64411,
+              "user_id": 1331430,
+              "user_type": "registered",
+              "accept_rate": 93,
+              "profile_image": "https://i.stack.imgur.com/KAKdm.jpg?s=128&g=1",
+              "display_name": "Fabr&#237;cio Matt&#233;",
+              "link": "https://stackoverflow.com/users/1331430/fabr%c3%adcio-matt%c3%a9"
+            },
+            "is_answered": true,
+            "view_count": 218906,
+            "protected_date": 1429972191,
+            "accepted_answer_id": 23667087,
+            "answer_count": 6,
+            "score": 772,
+            "last_activity_date": 1573787209,
+            "creation_date": 1400111716,
+            "last_edit_date": 1520434348,
+            "question_id": 23667086,
+            "content_license": "CC BY-SA 3.0",
+            "link": "https://stackoverflow.com/questions/23667086/why-is-my-variable-unaltered-after-i-modify-it-inside-of-a-function-asynchron",
+            "title": "Why is my variable unaltered after I modify it inside of a function? - Asynchronous code reference"
+          }
+        ],
+        "has_more": true,
+        "quota_max": 10000,
+        "quota_remaining": 8276
+      },
+      {
+        "error_id": 502,
+        "error_message": "too many requests from this IP, more requests available in 58662 seconds",
+        "error_name": "throttle_violation"
       }
-      secondData.push(votes)
-      thirdData.push(NoOfAnswer)
+    ]
+
+    for (let index = 0; index < JSON.parse(mockJson).items.length; index++) {
+      label.push(JSON.parse(mockJson).items[index].name)
+      data.push(JSON.parse(mockJson).items[index].count)
     }
+
+    /* Convert Data From MockJson For Chart*/
+    // for (let index = 0; index < JSON.parse(mockJson).length; index++) {
+    //   votes = 0;
+    //   NoOfAnswer = 0;
+    //   label.push(JSON.parse(mockJson)[index].tag)
+    //   secondLabel.push(JSON.parse(mockJson)[index].tag)
+    //   thirdLabel.push(JSON.parse(mockJson)[index].tag)
+    //   data.push(JSON.parse(mockJson)[index].NoOfQuestion)
+    //   for (let j = 0; j < JSON.parse(mockJson)[index].Questions.length; j++) {
+    //     votes = votes + JSON.parse(mockJson)[index].Questions[j].votes
+    //     NoOfAnswer = NoOfAnswer + JSON.parse(mockJson)[index].Questions[j].NoOfAnswer
+    //   }
+    //   secondData.push(votes)
+    //   thirdData.push(NoOfAnswer)
+    // }
 
     /* Refer HTML Element */
     let firstCanvas = document.getElementById("firstCanvas");
-    let secondCanvas = document.getElementById("secondCanvas");
-    let thirdCanvas = document.getElementById("thirdCanvas");
+    // let secondCanvas = document.getElementById("secondCanvas");
+    // let thirdCanvas = document.getElementById("thirdCanvas");
 
     /* Declare Chart Type */
     let firstCtx = firstCanvas.getContext("2d");
-    let secondCtx = secondCanvas.getContext("2d");
-    let thirdCtx = thirdCanvas.getContext("2d");
+    // let secondCtx = secondCanvas.getContext("2d");
+    // let thirdCtx = thirdCanvas.getContext("2d");
 
     /* Initialize Chart 1 */
-    let myChart = new Chart(firstCtx, {
-      type: 'polarArea',
-      data: data = {
-        datasets: [{
-          data: data,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255,99,132,1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-        }],
-        labels: label
-      },
-      options: {
-        responsive: true
-      }
-    });
+    let myChart;
+    firstChartFn(label, data)
 
     /* Initialize Chart 2 */
-    let secondChart = new Chart(secondCtx, {
-      type: 'doughnut',
-      data: data = {
-        datasets: [{
-          data: secondData,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255,99,132,1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-        }],
-        labels: secondLabel
-      },
-      options: {
-        responsive: true
-      }
-    });
+    // let secondChart = new Chart(secondCtx, {
+    //   type: 'doughnut',
+    //   data: data = {
+    //     datasets: [{
+    //       data: secondData,
+    //       backgroundColor: [
+    //         'rgba(255, 99, 132, 0.2)',
+    //         'rgba(54, 162, 235, 0.2)',
+    //         'rgba(255, 206, 86, 0.2)',
+    //         'rgba(75, 192, 192, 0.2)',
+    //         'rgba(153, 102, 255, 0.2)',
+    //         'rgba(255, 159, 64, 0.2)'
+    //       ],
+    //       borderColor: [
+    //         'rgba(255,99,132,1)',
+    //         'rgba(54, 162, 235, 1)',
+    //         'rgba(255, 206, 86, 1)',
+    //         'rgba(75, 192, 192, 1)',
+    //         'rgba(153, 102, 255, 1)',
+    //         'rgba(255, 159, 64, 1)'
+    //       ],
+    //     }],
+    //     labels: secondLabel
+    //   },
+    //   options: {
+    //     responsive: true
+    //   }
+    // });
 
     /* Initialize Chart 3 */
-    let thirdChart = new Chart(thirdCtx, {
-      type: 'pie',
-      data: data = {
-        datasets: [{
-          data: thirdData,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255,99,132,1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-        }],
-        labels: thirdLabel
-      },
-      options: {
-        responsive: true
-      }
-    });
+    // let thirdChart = new Chart(thirdCtx, {
+    //   type: 'pie',
+    //   data: data = {
+    //     datasets: [{
+    //       data: thirdData,
+    //       backgroundColor: [
+    //         'rgba(255, 99, 132, 0.2)',
+    //         'rgba(54, 162, 235, 0.2)',
+    //         'rgba(255, 206, 86, 0.2)',
+    //         'rgba(75, 192, 192, 0.2)',
+    //         'rgba(153, 102, 255, 0.2)',
+    //         'rgba(255, 159, 64, 0.2)'
+    //       ],
+    //       borderColor: [
+    //         'rgba(255,99,132,1)',
+    //         'rgba(54, 162, 235, 1)',
+    //         'rgba(255, 206, 86, 1)',
+    //         'rgba(75, 192, 192, 1)',
+    //         'rgba(153, 102, 255, 1)',
+    //         'rgba(255, 159, 64, 1)'
+    //       ],
+    //     }],
+    //     labels: thirdLabel
+    //   },
+    //   options: {
+    //     responsive: true
+    //   }
+    // });
+
+    if (socket != undefined) {
+      console.log('Socket Connected');
+    }
+    let labe = [];
+    let dat = [];
+    socket.on('chartSocket', (data) => {
+      labe = [];
+      dat = [];
+      data.data.items.forEach(element => {
+        labe.push(element.name)
+        dat.push(element.count)
+      });
+      firstChartFn(labe, dat);
+    })
+
+    // socket.on('tableArray', (data) => {
+    //   console.log(data)
+    // })
+
+    function firstChartFn(label, data) {
+      myChart = new Chart(firstCtx, {
+        type: 'polarArea',
+        data: data = {
+          datasets: [{
+            data: data,
+            backgroundColor: colorCode,
+            borderColor: colorCode,
+          }],
+          labels: label
+        },
+        options: {
+          responsive: true
+        }
+      })
+    }
   </script>
 
 </body>
